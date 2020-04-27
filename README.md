@@ -1,2 +1,2 @@
-# pScanner
+# pSSID
 WiFi scanning tool
