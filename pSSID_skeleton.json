@@ -39,12 +39,10 @@
     },
     
     "tests": {
-        "example_test_throughput": {
-            "type": "throughput",
+        "example_test_rtt": {
+            "type": "rtt",
             "spec": {
-                "source": "{% address[0] %}",
-                "dest": "{% address[1] %}",
-                "duration": "PT30S"
+                "dest": "testpoint2",
             }
         },
         "example_test_latencybg": {
@@ -78,30 +76,11 @@
     },
     
     "tasks": {
-        "example_task_throughput": {
-            "group": "example_group_mesh",
-            "test": "example_test_throughput",
-            "schedule": "example_schedule_PT4H",
+        "example_task_rtt": {
+            "test": "example_test_rtt",
             "archives": [ "example_esmond_archive" ],
             "_meta": {
-                "display-name": "Example Throughput Tests"
-            }
-        },
-        "example_task_latencybg": {
-            "group": "example_group_mesh",
-            "test": "example_test_latencybg",
-            "archives": [ "example_esmond_archive" ],
-            "_meta": {
-                "display-name": "Example Loss Tests"
-            }
-        },
-        "example_task_trace": {
-            "group": "example_group_mesh",
-            "test": "example_test_trace",
-            "schedule": "example_schedule_PT10M",
-            "archives": [ "example_esmond_archive" ],
-            "_meta": {
-                "display-name": "Example Traceroute Tests"
+                "display-name": "Example RTT Tests"
             }
         }
     }
