@@ -7,8 +7,6 @@ import string
 import sys
 import pscheduler
 
-from psselect import polled_select
-
 
 def json_decomment(json, prefix='#', null=False):
     """

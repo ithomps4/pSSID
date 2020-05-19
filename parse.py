@@ -1,6 +1,7 @@
 import psjson as psjson
 import sys
 import json
+import syslog
 
 # Requires a json file to parse
 if len(sys.argv) != 2:

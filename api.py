@@ -19,6 +19,7 @@ import StringIO
 import time
 import urllib
 import sys
+import logging
 
 from dateutil.tz import tzlocal
 
@@ -32,6 +33,9 @@ from dateutil.tz import tzlocal
 
 # Turn this on to dump the JSON fetched during intermediate steps.
 VERBOSE = True
+
+# Logging configuration
+logging.basicConfig(filename='pSSID.log', level=logging.DEBUG)
 
 """
 # Example test
@@ -357,6 +361,8 @@ print "JSON Result:"
 print
 print json_dump(result_data)
 
+logging.info(run_data["result-href"])
+
 
 # -----------------------------------------------------------------------------
 
@@ -385,6 +391,7 @@ print
 print "Text-formatted result:"
 print
 print result_text
+
 
 
 # -----------------------------------------------------------------------------
