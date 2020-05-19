@@ -42,7 +42,7 @@
         "example_test_rtt": {
             "type": "rtt",
             "spec": {
-                "dest": "testpoint2",
+                "dest": "testpoint2"
             }
         },
         "example_test_latencybg": {
