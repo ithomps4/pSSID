@@ -2,6 +2,7 @@ import psjson as psjson
 import sys
 import json
 import syslog
+import time
 
 # Requires a json file to parse
 if len(sys.argv) != 2:
@@ -21,6 +22,7 @@ addresses = data['addresses']
 tasks = data['tasks']
 test_dict = {}
 to_test = []
+queue = []
 
 # Create a dict of tests and test info
 for item in tests:
@@ -35,8 +37,11 @@ for entry in tasks:
 for x in to_test:
     task = {'schema':1, 'schedule': {}}
     task['test'] = x
+    queue.append(task)
 
 # Send test to api to run
 # @TODO run in loop using queue
-sys.argv = ['api.py', task]
-execfile('api.py')
+for i in range(5):
+    for test in queue:
+        sys.argv = ['api.py', test]
+        execfile('api.py')
