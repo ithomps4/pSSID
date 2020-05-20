@@ -3,8 +3,15 @@ import sys
 import json
 import syslog
 import time
-import threading
 import daemon
+
+def apid(queue):
+    while True:
+        for test in queue:
+            sys.argv = ['api.py', test]
+            execfile('api.py')
+        print('Sleeping')
+        time.sleep(10)
 
 
 # Requires a json file to parse
@@ -42,14 +49,16 @@ for x in to_test:
     task['test'] = x
     queue.append(task)
 
+sys.argv = ['api.py', task]
+execfile('api.py')
+
+apid(queue)
 
 # Send test to api to run
-# @TODO run in loop using queue
-while True:
-    for test in queue:
-        sys.argv = ['api.py', test]
-        execfile('api.py')
-    print('Sleeping')
-    time.sleep(10)
+"""
+api_daemon = daemon.DaemonContext()
+api_daemon.queue = queue
+api_daemon.open()
+"""
 
 print('Exiting...')
