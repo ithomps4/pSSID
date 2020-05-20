@@ -34,6 +34,9 @@ from dateutil.tz import tzlocal
 # Turn this on to dump the JSON fetched during intermediate steps.
 VERBOSE = True
 
+# Turn this on to print to std out
+PRINT = False
+
 # Logging configuration
 logging.basicConfig(filename='pSSID.log', level=logging.DEBUG)
 
@@ -257,9 +260,9 @@ try:
 except Exception as ex:
     fail("Unable to post task: %s" % (str(ex)))
 
-
-print
-print "New task is", task_url
+if PRINT:
+    print
+    print "New task is", task_url
 
 
 # -----------------------------------------------------------------------------
@@ -281,7 +284,7 @@ try:
 except KeyError:
     fail("Server returned incomplete data.")
 
-if VERBOSE:
+if VERBOSE and PRINT:
     print
     print
     print "Task with server-added detail:"
@@ -308,10 +311,11 @@ for key in ["start-time", "end-time", "result-href"]:
     if key not in run_data:
         fail("Server did not return %s with run data" % (key))
 
-print
-print "First run is", run_data["href"]
+if PRINT:
+    print
+    print "First run is", run_data["href"]
 
-if VERBOSE:
+if VERBOSE and PRINT:
     print
     print "Data about first run:"
     print
@@ -336,8 +340,9 @@ sleep_seconds = (sleep_time.days * 86400) \
                 + (sleep_time.seconds) \
                 + (sleep_time.microseconds / (10.0**6))
 
-print
-print "Waiting", sleep_seconds, "seconds for run to finish..."
+if PRINT:
+    print
+    print "Waiting", sleep_seconds, "seconds for run to finish..."
 time.sleep(sleep_seconds)
 
 
@@ -347,19 +352,21 @@ time.sleep(sleep_seconds)
 # Wait for the result to be produced and fetch it.
 #
 
-print
-print "Waiting for result at", run_data["result-href"]
+if PRINT:
+    print
+    print "Waiting for result at", run_data["result-href"]
 
 status, result_data = url_get(run_data["result-href"],
                               params={"wait-merged": True})
 if status != 200:
     fail("Did not get a result: %s" % (result_data))
 
-print
-print
-print "JSON Result:"
-print
-print json_dump(result_data)
+if PRINT:
+    print
+    print
+    print "JSON Result:"
+    print
+    print json_dump(result_data)
 
 logging.info(run_data["result-href"])
 
@@ -386,11 +393,12 @@ status, result_text = url_get(run_data["result-href"],
 if status != 200:
     fail("Did not get a result: %s" % (result_text))
 
-print
-print
-print "Text-formatted result:"
-print
-print result_text
+if PRINT:
+    print
+    print
+    print "Text-formatted result:"
+    print
+    print result_text
 
 
 
