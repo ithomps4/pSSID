@@ -3,6 +3,9 @@ import sys
 import json
 import syslog
 import time
+import threading
+import daemon
+
 
 # Requires a json file to parse
 if len(sys.argv) != 2:
@@ -39,9 +42,14 @@ for x in to_test:
     task['test'] = x
     queue.append(task)
 
+
 # Send test to api to run
 # @TODO run in loop using queue
-for i in range(5):
+while True:
     for test in queue:
         sys.argv = ['api.py', test]
         execfile('api.py')
+    print('Sleeping')
+    time.sleep(10)
+
+print('Exiting...')
