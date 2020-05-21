@@ -68,6 +68,11 @@
             "sliprand": true,
             "slip": "PT4H"
         },
+        "example_schedule_PT1M": {
+            "repeat": "PT1M",
+            "sliprand": true,
+            "slip": "PT4H"
+        },   
         "example_schedule_PT10M": {
             "repeat": "PT10M",
             "sliprand": true,
@@ -79,6 +84,7 @@
         "example_task_rtt": {
             "test": "example_test_rtt",
             "archives": [ "example_esmond_archive" ],
+            "schedule": "example_schedule_PT1M",
             "_meta": {
                 "display-name": "Example RTT Tests"
             }
