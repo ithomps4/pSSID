@@ -20,6 +20,7 @@ import time
 import urllib
 import sys
 import logging
+import logging.handlers
 
 from dateutil.tz import tzlocal
 
@@ -38,7 +39,10 @@ VERBOSE = True
 PRINT = False
 
 # Logging configuration
-logging.basicConfig(filename='pSSID.log', level=logging.DEBUG)
+pSSID_logger = logging.getLogger('SysLogger')
+pSSID_logger.setLevel(logging.DEBUG)
+handler = logging.handlers.SysLogHandler(address = '/dev/log', facility = 'local6')
+pSSID_logger.addHandler(handler)
 
 """
 # Example test
@@ -61,6 +65,7 @@ TASK = {
 """
 
 TASK = sys.argv[1]
+print(TASK)
 
 # This is the name of the host where the task should be posted.  This
 # host is called the "lead participant" in pScheduler's terms.  Note
@@ -228,7 +233,6 @@ def url_post( url,          # GET URL
     """
     Post to a URL, returning whatever came back.
     """
-
     content_type, data = __content_type_data(content_type, headers, data)
     headers["Content-Type"] = content_type
 
@@ -255,10 +259,16 @@ def url_post( url,          # GET URL
 tasks_url = "https://%s/pscheduler/tasks" % (LEAD)
 print "Posting to", tasks_url
 
+
+status, task_url = url_post(tasks_url, data=json_dump(TASK))
+
+
+"""
 try:
     status, task_url = url_post(tasks_url, data=json_dump(TASK))
 except Exception as ex:
     fail("Unable to post task: %s" % (str(ex)))
+"""
 
 if PRINT:
     print
@@ -368,8 +378,8 @@ if PRINT:
     print
     print json_dump(result_data)
 
-logging.info(run_data["result-href"])
-
+# Log result to pSSID.log
+pSSID_logger.info(run_data["result-href"])
 
 # -----------------------------------------------------------------------------
 
@@ -408,4 +418,4 @@ if PRINT:
 # The End
 #
 
-exit(0)
+#exit(0)
