@@ -1,4 +1,5 @@
 import psjson as psjson
+import pscheduler
 import sys
 import json
 import syslog
@@ -6,6 +7,9 @@ import time
 import daemon
 import optparse
 import threading
+
+opt_parser = optparse.OptionParser()
+
 
 # Daemon-related options
 
@@ -15,18 +19,26 @@ opt_parser.add_option("--pid-file", help="Location of PID file", action="store",
 
 (options, args) = opt_parser.parse_args()
 
-"""
-@ Daemon function to run tests
-"""
+
 def apid(queue):
+    """
+    Run provided queue of tests forever
+    """
     while True:
         for test in queue:
+            # Call rest api with a test
             sys.argv = ['api.py', test]
             execfile('api.py')
+
+        # Wait between test rounds
         print('Sleeping')
         time.sleep(10)
 
+
 def main():
+    """
+    Configure test queue and pass to daemon
+    """
     # Requires a json file to parse
     if len(sys.argv) != 2:
         raise ValueError('Provide json file to parse')
@@ -62,17 +74,19 @@ def main():
         task['test'] = x
         queue.append(task)
 
-    sys.argv = ['api.py', task]
-    execfile('api.py')
+    #sys.argv = ['api.py', task]
+    #execfile('api.py')
 
-    apid(queue)
-
+    # Launch daemon thread to run tests
     api_worker = threading.Thread(
         target=lambda: apid(queue))
     api_worker.setDaemon(True)
     api_worker.start()
 
+    time.sleep(10)
+
     print('Exiting...')
+
 
 if options.daemon:
     pidfile = pscheduler.PidFile(options.pidfile)
