@@ -6,7 +6,7 @@ import datetime
 s = sched.scheduler(time.time, time.sleep)
 
 def iso_to_s(iso_time):
-    return iso.iso8601iso8601_as_timedelta(iso_time).total_seconds()
+    return iso.iso8601_as_timedelta(iso_time).total_seconds()
 
 def low_freq():
     print('This is the low')
