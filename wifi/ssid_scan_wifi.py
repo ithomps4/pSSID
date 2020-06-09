@@ -9,7 +9,7 @@ from wifi import Cell, Scheme
 # Return a list of ('SSID', 'Mac Address', 'Signal Strength')
 
 def getSSIDs():
-    cells = Cell.all('wlp1s0') # Specify interface to scan on
+    cells = Cell.all('wlan0') # Specify interface to scan on
 
     wifi_list = []
     for cell in cells:
